@@ -22,7 +22,7 @@ public class CustomProxy<T> implements InvocationHandler {
     public Object invoke(Object proxy, Method m, Object[] args) throws Throwable {
         Object result;
         try {
-            List<ExecuteWire> executeWires = new ArrayList<>();
+            List<IExecuteWire> executeWires = new ArrayList<>();
             for (Annotation annotation : m.getAnnotations()) {
                 if(annotation.annotationType().getName().toLowerCase().equals("override")) continue;
                 Class<?> cls;
@@ -37,7 +37,7 @@ public class CustomProxy<T> implements InvocationHandler {
                 executeWire.before(proxy, m, args);
             }
             result = m.invoke(obj, args);
-            for (ExecuteWire executeWire : executeWires) {
+            for (IExecuteWire executeWire : executeWires) {
                 executeWire.after(proxy, m, args);
             }
         } catch (InvocationTargetException e) {
